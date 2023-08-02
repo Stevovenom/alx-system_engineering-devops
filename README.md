@@ -1,2 +1,1 @@
-# alx-system_engineering-devops
-Journey to greatness
+ALX is the best
