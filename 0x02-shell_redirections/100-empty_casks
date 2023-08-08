@@ -1,2 +1,2 @@
 #!/bin/bash
-find . -type f -empty -exec basename {} \; ; find . -type d -empty -exec basename {} \; ; echo
+find . -empty -printf "%P\n"
