@@ -1,1 +1,1 @@
-ALX is the best
+shell,init files,variables
