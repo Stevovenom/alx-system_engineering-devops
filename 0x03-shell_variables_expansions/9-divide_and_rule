@@ -1,0 +1,2 @@
+#!/bin/bash
+echo "The results of POWER divided by DIVIDE is $result"
