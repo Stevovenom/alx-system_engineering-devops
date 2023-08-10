@@ -1,0 +1,2 @@
+#!/bin/bash
+grep -n '' input_file | grep -E '^[[:digit"]]*[02468]:'
