@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# use the ps command to display process information
+# -e shows information for all processes
+# -o defines the output format
+ps -a -x -u -f
