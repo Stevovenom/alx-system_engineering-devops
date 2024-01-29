@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# line script containing the bash word
+# shellcheck disable=SC2009
+ps aux | grep bash | grep -v grep
