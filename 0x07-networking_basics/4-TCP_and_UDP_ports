@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+# displayignthe listening ports
+netstat -anp
