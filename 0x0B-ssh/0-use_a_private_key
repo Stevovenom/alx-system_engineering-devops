@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# this script uses the ssh to connect to my server
+ssh ubuntu -i ~/.ssh/school
+
+#ssh -i ~/.ssh/school -o StrictHostKeyChecking=no ubuntu@8.8.8.8
