@@ -2,5 +2,6 @@
 # the creation of anew RSA key pairs
 
 # ssh-keygen -t rsa -b 4096 -f ~/.ssh/school -N 'betty'
+# ssh-keygen -t rsa -b 4096 -p betty -f ~/.ssh/school
 
-ssh-keygen -t rsa -b 4096 -p betty -f ~/.ssh/school
+ssh-keygen -t rsa -b 4096 -f 'school' -N 'betty'
