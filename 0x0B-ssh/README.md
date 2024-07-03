@@ -16,3 +16,31 @@ but when i ran it in the root, the error i received was that too many arguments 
 	ssh-keygen -t rsa -b 4096 -f ~/.ssh/school -N '<preferred password>'
 
 By running this the RSA key pair having the private and the public keys were created.
+
+#Task 2
+The configuration files for this particular task are located in etc folder and hence use <strong>cd /etc</strong> and then cd into the ssh files where the configuration files are located. Then use the <strong>ssh_config</strong> by using <strong>sudo vim ssh_config</strong> to enable editing and complete the task.
+
+#Task 3
+get our public key, that is in cd /root/.ssh/school_pub and paste it in the profile to achieve task 3
+
+after all this, go to the  "YOUR SERVERS" and click on it and then ask for a new server only after doing the 4 tasks, that is from 0 to 3
+
+incase of permission denied
+
+name a file web-01 and give it execution rights and try to execute it
+
+!#/usr/bin/env bash
+# server-01 login
+eval $("ssh-agent")
+ssh-add ~/.ssh/school
+
+ssh ubuntu@<ip-address>
+
+after this, you will be able to login in into the newly created web server adn using the cd .ssh
+copy the public key in task 3 and paste it in the file named authorized keys
+
+
+Also, one can use <strong>ssh -i ~/.ssh/school ubuntu@your_server_ip</strong> for easier access where the i[ address is ip address assigned when requesting for a new server.
+
+#Task 4
+Learn PUPPET!
