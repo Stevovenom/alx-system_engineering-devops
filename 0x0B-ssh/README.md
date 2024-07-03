@@ -44,3 +44,19 @@ Also, one can use <strong>ssh -i ~/.ssh/school ubuntu@your_server_ip</strong> fo
 
 #Task 4
 Learn PUPPET!
+
+Though made a chage to the puppet code, but this can asslo be used in place of the code'
+
+<code>
+# using puppet to make changes to our configuration file
+
+file { 'etc/ssh/config':
+  ensure  => present,
+  content => "
+  #ssh user configuration
+  host*
+  IdentifyFile ~/.ssh/school
+  PasswordAuthentication no
+  ",
+}
+</code>
