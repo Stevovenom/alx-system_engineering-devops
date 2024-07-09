@@ -112,9 +112,9 @@ echo "Hello World!" | sudo -tee /var/www/html/index.html
 #this is testing nginx configuration
 sudo nginx -t
 sudo service nginx reload
-
+</code>
 though I had some issues with the last checker and hence debugged to: <br></br>
-
+<code>
 #!/usr/bin/env bash
 #commands for successful installation of nginx web server
 
@@ -126,22 +126,22 @@ sudo ufw allow  'Nginx HTTP' # this is to enable the Nginx to use the firewall
 
 echo "Hello World!" | sudo tee /var/www/html/index.html
 
-# this is testing nginx configuration
+#this is testing nginx configuration
 sudo nginx -t
 sudo service nginx reload
 </code><br></br>
 
 <strong>N/B:</strong>
 
-port 22 is for SSH
-port 80 is for HTTP
+port 22 is for SSH<br>
+port 80 is for HTTP<br>
 
 
 
 
-continuation
+## continuation
 
-Redirections and Error Codes
+# Redirections and Error Codes
 
 status codes
 
@@ -374,7 +374,7 @@ file_line { 'install':
   ensure => 'present',
   path => '/etc/nginx/sites-enabled/default',
   after => 'listen 80 default_server:',
-  line => 'rewrite ^/redirect_me https://www.github.com/besthor permanent;',
+  line => 'rewrite ^/redirect_me https://www.github.com/stevovenom permanent;',
 }
 
 file { '/var/www/html/index.html':
