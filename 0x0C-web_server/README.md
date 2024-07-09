@@ -394,4 +394,12 @@ make it executable then git add git commit ...
 
 The resources for this particular task can be accessed in:
 
-1. 
+1. <a href="https://intranet.alxswe.com/rltoken/6TI3HiyFdwrbXWKVF24Gxw">How_the_ WEB_works</a><br>
+2. <a href="https://intranet.alxswe.com/rltoken/vkVMGlaf39j2DWAQWzo6EA">Nginx</a><br>
+3. <a href="https://intranet.alxswe.com/rltoken/zKrpVxWuUHVdW4URAjdFbw">How to configure Nginx</a><br>
+4. <a href="https://intranet.alxswe.com/rltoken/Ar18u5sRis1fkvkVgzdcqg">Child process concept page</a><br>
+5. <a href="https://intranet.alxswe.com/rltoken/xi3peVqYl02PfpHHHlCtxQ">Root and subdomain</a>
+6. <a href="https://intranet.alxswe.com/rltoken/sBrrP4EAmI3NoYjIgZrUhw">HTTP request</a>
+7. <a href="https://intranet.alxswe.com/rltoken/Eaa4ZuKvye941hTkP8VlBQ">HTTP Redirections</a>
+8. <a href="https://intranet.alxswe.com/rltoken/eJSp2QFTY6jqqNtz8OVDEw">NOT found HTTP response CODE</a>
+9. <a href="https://intranet.alxswe.com/rltoken/7WMNY5CWD-CBrxmQrdmfPg">LOG FILES on Linux</a>
