@@ -4,26 +4,27 @@
 Physical servers are physical computers that are eithe installed in an organization premise to achieve a articular task i.e this could be either hhosting etc while virtual servers run on top of host machines.
 In contrast to virtual servers, physical servers operate on specfic operating system and are capable of handling high loads of traffic and demanding workloads.
 
-examples of webservers
-Apache HTTP servers
-Nginx(engine x)
-litespeed
-Gunicorn
+Examples of webservers
+1. Apache HTTP servers
+2. Nginx(engine x)
+3. litespeed
+4. Gunicorn
 
 ## Task 0
-how to transfer files to a server
+<header>how to transfer files to a server</header>
 
 scp - it copies files securely to my root, since files within the network can be intercepted
 have 4 parameters:
+
 1. files location
 2. Server's IP address
 3. The user name
 4. the path to my private key
 
-incase i dont use the 4 parameters, i get the error Usage: 0-transfer_file PATH_TO_FILE IP USERNAME PATH_TO_SSH_KEY if less than 3 parameters passed
+Incase i dont use the 4 parameters, i get the error Usage: 0-transfer_file PATH_TO_FILE IP USERNAME PATH_TO_SSH_KEY if less than 3 parameters passed
 how disable strict host checking
 
-code
+<code>
 
 #!/usr/bin/env bash
 # checking parameters for file transfer
@@ -53,29 +54,30 @@ then
 	echo "FILE TRANSFER SUCCESSFUL"
 else
 	echo "FILE TRANSFER NOT SUCCESSFUL"
+</code>
 
-task 1
-how to install engine x(Nginx)
+## task 1
+<header>how to install engine x(Nginx)</header>
 
+First, we need to switch to our web-01 and hence to do that we use:<br>
+<code>ssh -i ~/.ssh/school ubuntu@<ip-address></code>
 
-ssh -i ~/.ssh/school ubuntu@<ip-address>
+The steps to follow through with are:<br>
+1. first update
+<code>sudo apt-get update</code>
 
-first update
-sudo apt-get update
+<code>sudo apt-get install -y nginx</code>
 
-sudo apt-get install -y nginx
+The -y flag just means yes and it just removs the prompt of having to type yes. It is essential in most scenarios when trying to install an application without any prompts of acceptance or denial.
 
-the -y flag just means yes and it just removs the prompt of having to type yes. It is essential in most scenarios when trying to install an application without any prompts of acceptance or denial.
-
-sudo service nginx
+Then one can start the nginx is: <code>sudo service nginx start </code>.<br></br>
 
 
 now back to the 0x0c-web_server, run the command
 
-scp -o "StrictHostKeyChecking no" -i "~/.ssh/school" "0-transfer_file" "ubuntu@54.172.227.90:~/"
+<code>scp -o "StrictHostKeyChecking no" -i "<path-to-the-ssh-key>" "<path-to-the-file-being-transferred>" "ubuntu@<ip-address>:~/"</code>
 
-now if you switch to the web-server, the file has now been copied
-
+By now doing this, if you switch to the web-server, the named file has now been copied. That is, part of task 1.<br></br>
 
 for task use the web-server to achieve this task
 
@@ -89,14 +91,15 @@ in the html add echo "Hello World!" | sudo tee /var/www/html/index.html
 then sudo nginx -t to test configuration
 
 then now restart throgh 
-
+<code>
 sudo service nginx restart
 sudo service nginx reload
+</code>
 
 now back to our sandbox,
 
-vim 1-install_ngix
-
+first had used the command for the vim 1-install_ngix shown below:- <br>
+<code>
 #!/usr/bin/env bash
 # commands for successful installation of nginx web server
 
@@ -110,8 +113,25 @@ echo "Hello World!" | sudo -tee /var/www/html/index.html
 sudo nginx -t
 sudo service nginx reload
 
+though I had some issues with the last checker and hence debugged to: <br></br>
 
-N/B:
+#!/usr/bin/env bash
+# commands for successful installation of nginx web server
+
+sudo apt-get update
+sudo apt-get install -y nginx
+
+sudo service nginx start
+sudo ufw allow  'Nginx HTTP' # this is to enable the Nginx to use the firewall
+
+echo "Hello World!" | sudo tee /var/www/html/index.html
+
+# this is testing nginx configuration
+sudo nginx -t
+sudo service nginx reload
+</code><br></br>
+
+<strong>N/B:</strong>
 
 port 22 is for SSH
 port 80 is for HTTP
