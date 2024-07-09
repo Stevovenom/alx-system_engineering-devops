@@ -7,14 +7,11 @@ sudo apt-get update
 sudo apt-get install -y nginx
 
 # Create a custom HTML file for Nginx
-# cat <<EOL > /var/www/html/index.nginx-debian.html
-# Hello World!
-# EOL
+echo "Hello World!" | sudo tee /var/www/html/index.nginx-debian.html
 
-# this is to enable the nginx to use the firewall
-sudo ufw 'Nginx HTTP'
-echo "Hello World!" | sudo -tee /var/www/html/index.nginx-debian.html
+# Enable the firewall rule for Nginx
+sudo ufw allow 'Nginx HTTP'
 
-# check the configuration and  Restart Nginx to apply changes
+# Check the configuration and restart Nginx to apply changes
 sudo nginx -t
 sudo service nginx restart
