@@ -1,4 +1,4 @@
-##WEB SERVERS
+## WEB SERVERS
 
 <strong>A SERVER IS like a central hub that other devices connect to inorder to acces services or resources</strong>, hence through this definition, the term <strong>WEB SERVER </strong> basically refers to a software or a computer program that delivers web pages or serve static contents to clients over the internet.For more information on the working of a web server, one can refer to <a href="https://developer.mozilla.org/en-US/docs/Learn/Common_questions/Web_mechanics/What_is_a_web_server#:~:text=On%20the%20hardware%20side%2C%20a,devices%20connected%20to%20the%20web.">click here</a><br>
 Physical servers are physical computers that are eithe installed in an organization premise to achieve a articular task i.e this could be either hhosting etc while virtual servers run on top of host machines.
@@ -27,8 +27,8 @@ how disable strict host checking
 <code>
 
 #!/usr/bin/env bash
-# checking parameters for file transfer
-# 0-success, 1-error
+#checking parameters for file transfer
+#0-success, 1-error
 
 if [ $# -lt 4 ]
 then
@@ -36,18 +36,18 @@ then
 	exit 1
 fi
 
-# asigning parameters to variables
+#asigning parameters to variables
 
 path_to_file=$1
 ip_address=$2
 user_name=$3
 path_to_ssh_key=$4
 
-# disable strict host key checking
+#disable strict host key checking
 
 scp -o "StrictHostKeyChecking=no" -i "$path_to_ssh_key" "$path_to_file" "$username@$ip:~/"
 
-# checking if the file transfer was successful
+#checking if the file transfer was successful
 
 if [ $? -eq 0 ]
 then
@@ -101,7 +101,7 @@ now back to our sandbox,
 first had used the command for the vim 1-install_ngix shown below:- <br>
 <code>
 #!/usr/bin/env bash
-# commands for successful installation of nginx web server
+#commands for successful installation of nginx web server
 
 sudo apt-get update
 sudo apt-get install nginx
@@ -109,14 +109,14 @@ sudo ufw 'Nginx HTTP' # this is to enable the Nginx to use the firewall
 
 echo "Hello World!" | sudo -tee /var/www/html/index.html
 
-# this is testing nginx configuration
+#this is testing nginx configuration
 sudo nginx -t
 sudo service nginx reload
 
 though I had some issues with the last checker and hence debugged to: <br></br>
 
 #!/usr/bin/env bash
-# commands for successful installation of nginx web server
+#commands for successful installation of nginx web server
 
 sudo apt-get update
 sudo apt-get install -y nginx
