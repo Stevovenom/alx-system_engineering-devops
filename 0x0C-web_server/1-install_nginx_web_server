@@ -8,22 +8,7 @@ sudo apt-get install -y nginx
 
 # Create a custom HTML file for Nginx
 cat <<EOL > /var/www/html/index.nginx-debian.html
-<!DOCTYPE html>
-<html>
-<head>
-<title>Welcome to nginx!</title>
-<style>
-	body {
-		width: 35em;
-		margin: 0 auto;
-		font-family: Tahoma, Verdana, Arial, sans-serif;
-	}
-</style>
-</head>
-<body>
-<h1>Hello World!</h1>
-</body>
-</html>
+Hello World!
 EOL
 
 # Restart Nginx to apply changes
