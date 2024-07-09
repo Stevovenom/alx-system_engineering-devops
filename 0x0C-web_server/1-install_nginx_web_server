@@ -1,11 +1,32 @@
 #!/usr/bin/env bash
-# installation of nginx
 
+# Update package list
 sudo apt-get update
-sudo apt-get install nginx
 
-sudo ufw 'Nginx HTTP' # this is to enable the Nginx to use the firewall
-echo "Hello World!" | sudo -tee /var/www/html/index.html
-# this is testing nginx configuration
-sudo nginx -t
-sudo service nginx reload
+# Install Nginx
+sudo apt-get install -y nginx
+
+# Create a custom HTML file for Nginx
+cat <<EOL > /var/www/html/index.nginx-debian.html
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<body>
+<h1>Hello World!</h1>
+</body>
+</html>
+EOL
+
+# Restart Nginx to apply changes
+sudo service nginx restart
+
+echo "Nginx has been installed and configured to return 'Hello World!' on port 80."
