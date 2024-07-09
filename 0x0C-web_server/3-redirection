@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+# Create a new configuration file for the redirection
+sudo bash -c 'cat > /etc/nginx/sites-available/redirect_me <<EOF
+server {
+    listen 80;
+    server_name journeytogreatness.tech www.journeytogreatness.tech;
+
+    location /redirect_me {
+        return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;
+    }
+}
+EOF'
+
+# Enable the new configuration by creating a symbolic link
+sudo ln -s /etc/nginx/sites-available/redirect_me /etc/nginx/sites-enabled/
+
+# Remove the default configuration link to avoid conflicts
+sudo rm /etc/nginx/sites-enabled/default
+
+# Restart Nginx to apply the configuration
+sudo service nginx restart
+
