@@ -1,5 +1,5 @@
 ## WEB SERVERS
-<a href="https://s3.amazonaws.com/intranet-projects-files/holbertonschool-sysadmin_devops/266/8Gu52Qv.png"></a>
+<img src="https://s3.amazonaws.com/intranet-projects-files/holbertonschool-sysadmin_devops/266/8Gu52Qv.png" alt="" loading="lazy" style="">
 <strong>A SERVER IS like a central hub that other devices connect to inorder to acces services or resources</strong>, hence through this definition, the term <strong>WEB SERVER </strong> basically refers to a software or a computer program that delivers web pages or serve static contents to clients over the internet.For more information on the working of a web server, one can refer to <a href="https://developer.mozilla.org/en-US/docs/Learn/Common_questions/Web_mechanics/What_is_a_web_server#:~:text=On%20the%20hardware%20side%2C%20a,devices%20connected%20to%20the%20web.">click here</a><br>
 Physical servers are physical computers that are eithe installed in an organization premise to achieve a articular task i.e this could be either hhosting etc while virtual servers run on top of host machines.
 In contrast to virtual servers, physical servers operate on specfic operating system and are capable of handling high loads of traffic and demanding workloads.
