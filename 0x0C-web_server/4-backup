@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+# Create a new configuration file for the redirection
+sudo bash -c 'cat > /etc/nginx/sites-available/redirect_me <<EOF
+server {
+    listen 80;
+    server_name journeytogreatness.tech www.journeytogreatness.tech;
+
+    location /redirect_me {
+        return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;
+    }
+}
+EOF'
+
+# Enable the new configuration by creating a symbolic link
+sudo ln -s /etc/nginx/sites-available/redirect_me /etc/nginx/sites-enabled/
+
+# Remove the default configuration link to avoid conflicts
+sudo rm /etc/nginx/sites-enabled/default
+
+# Restart Nginx to apply the configuration
+sudo service nginx restart
+
+#!/usr/bin/env bash
+# custommization of the 404 page in nginx
+
+sudo apt-get update
+sudo apt-get install -y nginx
+
+sudo service nginx start
+sudo ufw allow  'Nginx HTTP' # this is to enable the Nginx to use the firewall
+
+echo "Hello World!" | sudo tee /var/www/html/index.html
+
+# Define the replacement string directly in the script
+string_for_replacement='server_name _;rewrite ^/redirect_me https://github.com/stevovenom permanent;'
+
+# Perform the replacement using sed
+sudo sed -i "s|server_name _;|$string_for_replacement|" /etc/nginx/sites-enabled/default
+
+echo "Ceci n'est pas une page" | sudoo tee /var/www/html/404.html
+
+# Define the replacement string
+string_for_replacement="listen 80 default_server;\n\terror_page 404 /404.html;\n\tlocation = /404.html {\n\t\troot /var/www/html;\n\tinternal;\n\t}"
+
+# Perform the replacement using sed
+sudo sed -i "s|listen 80 default_server;|$string_for_replacement|" /etc/nginx/sites-enabled/default
+
+sudo nginx -t
+sudo service nginx restart
