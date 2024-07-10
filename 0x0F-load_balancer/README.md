@@ -1,13 +1,9 @@
-<<<<<<< HEAD
-<title>0x0F. Load balancer</title>
+
+<h1>0x0F. Load balancer<h1>
 <a href="https://s3.amazonaws.com/intranet-projects-files/holbertonschool-sysadmin_devops/275/qfdked8.png"></a>
 <br>
-=======
-0x0F. Load balancer
-<img src="https://s3.amazonaws.com/intranet-projects-files/holbertonschool-sysadmin_devops/275/qfdked8.png">
->>>>>>> 7d679dfeb3cb1299589257212818abfb0e576e22
 
-<h1>The curl command is a tool to transfer data from or to a server, using one of the supported protocols (HTTP, HTTPS, FTP, etc.). Here’s the differentiation between the options -v and -sI: </h1><br>
+<p>The curl command is a tool to transfer data from or to a server, using one of the supported protocols (HTTP, HTTPS, FTP, etc.). Here’s the differentiation between the options -v and -sI: <p><br>
 
 # <code>curl -v <ip-address>:</code>
 
