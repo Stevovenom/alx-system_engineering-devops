@@ -136,6 +136,40 @@ sudo service nginx reload
 port 22 is for SSH<br>
 port 80 is for HTTP<br>
 
+## Task 2
+For this task, it involves teh reation of a new domain name from <strong>.tech</strong> adn using the details gotten to acheve the task. The basis for this is for DNS management and just a continuation is : <br></br>
+
+# Access DNS Management:
+Navigate to the DNS management section for your domain.
+Then add an A Record:
+
+#Create a new A record:
+Host/Name: Leave this field empty or enter "@" (depending on the DNS provider) to point the root domain.<br>
+Type: A(This could not be necessary since you could not be given this option as you had already chosen it while seleting the creation type of a new record.<br>
+Value: Use the IP address of your 495864-web-01 server.<br>
+TTL: Set the TTL (Time to Live) to the default value or a lower value like 300 seconds for faster propagation.
+Save the DNS Settings:<br>
+
+Save the changes and wait for DNS propagation. This can take from a few minutes to a couple of hours.
+
+#Verify DNS Setup
+Check DNS Propagation:
+
+Use a DNS lookup tool like WhatsMyDNS or the dig command to verify the A record:
+
+<code>
+dig yourdomainname.tech
+</code><br>
+Ensure the output shows your domain pointing to your ip-address.<br>
+
+
+#Verify Domain Registrar:
+
+Go to Whois Lookup and enter your domain name.<br>
+Check that the registrar name in the JSON response is "registrarName": "Dotserve Inc". If it has this, go to your intranet profile and add the link to teh doman i.e, the yourdomainname.tech as guided.<br>
+
+#Final Note
+It may take some time for the DNS changes to propagate fully. If you encounter any issues, ensure the DNS settings are correctly configured and check the propagation status after some time.
 
 
 
@@ -208,9 +242,75 @@ status codes
 511 - Network Authentication required
 
 
-task 3
+## Task 3
 
 how to use the sed command, an example:
+
+
+for this particular task, I ran numerous commands in the to try and create the redirection in my default folder in /etc/nginx/sites-enabled in my web-01 server, the scripts are :- <br></br>
+<code>
+#using sed command to perform redirection
+
+#string_for_replacement="server_name _;\n\trewrite ^\/redirect_me https:\/\/github.com\/stevovenom permanent;"
+
+#perform teh replacement using sed
+#sudo sed -i "s/server_name _;/$string_for_replacement/" /etc/nginx/sites-enabled/default
+
+#Define the string for replacement using echo and escape sequences
+#string_for_replacement=$(echo -e "server_name _;\n\trewrite ^/redirect_me https://github.com/stevovenom permanent;")
+
+#Perform the replacement using sed
+#sudo sed -i "s|server_name _;|$string_for_replacement|" /etc/nginx/sites-enabled/default
+
+#string_for_replacement=$(cat <<'EOF'
+#server_name _;
+#rewrite ^/redirect_me https://github.com/stevovenom permanent;
+#EOF
+#)
+
+#Perform the replacement using sed
+#sudo sed -i "s|server_name _;|$string_for_replacement|" /etc/nginx/sites-enabled/default
+#
+#Define the replacement string using a heredoc and save it to a temporary file
+#cat <<'EOF' > /tmp/replacement.txt
+#server_name _;
+#rewrite ^/redirect_me https://github.com/stevovenom permanent;
+#EOF
+
+#Read the replacement string from the temporary file
+#string_for_replacement=$(cat /tmp/replacement.txt)
+
+#Perform the replacement using sed
+#sudo sed -i "s|server_name _;|$string_for_replacement|" /etc/nginx/sites-enabled/default
+
+#Clean up the temporary file
+#rm /tmp/replacement.txt
+#
+#Define the replacement string directly in the script
+#string_for_replacement='server_name _;
+ #   rewrite ^/redirect_me https://github.com/stevovenom permanent;'
+
+#Perform the replacement using sed
+#sed -i "s|server_name _;|$string_for_replacement|" /etc/nginx/sites-enabled/default
+
+
+
+#!/usr/bin/env bash
+
+#Define the replacement string directly in the script
+string_for_replacement='server_name _;rewrite ^/redirect_me https://github.com/stevovenom permanent;'
+
+#Perform the replacement using sed
+sudo sed -i "s|server_name _;|$string_for_replacement|" /etc/nginx/sites-enabled/default
+</code><br></br>
+
+All the comments are the scripts that i was trying to run but kept seeing an error output on executing the file: <br></br>
+<code>
+ubuntu@495864-web-01:~$ ./redirection
+sed: -e expression #1, char 31: unterminated `s` command
+ubuntu@495864-web-01:~$ sudo vim redirection
+
+</code><br>
 
 New_string = "GIVES BACK;\n404;\n using sed command\n;"
 sed -i "s/GIVES BACK;/$NEW_string/" /root/file

@@ -20,3 +20,22 @@ sudo rm /etc/nginx/sites-enabled/default
 # Restart Nginx to apply the configuration
 sudo service nginx restart
 
+#!/usr/bin/env bash
+# permanent redirection by performing 301 moved permanently
+
+sudo apt-get update
+sudo apt-get install -y nginx
+
+sudo service nginx start
+sudo ufw allow  'Nginx HTTP' # this is to enable the Nginx to use the firewall
+
+echo "Hello World!" | sudo tee /var/www/html/index.html
+
+# Define the replacement string directly in the script
+string_for_replacement='server_name _;rewrite ^/redirect_me https://github.com/stevovenom permanent;'
+
+# Perform the replacement using sed
+sudo sed -i "s|server_name _;|$string_for_replacement|" /etc/nginx/sites-enabled/default
+
+sudo nginx -t
+sudo service nginx restart
