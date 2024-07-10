@@ -1,43 +1,27 @@
 #!/usr/bin/env bash
-# Update and install nginx
+# permanent redirection by performing 301 moved permanently
+
 sudo apt-get update
 sudo apt-get install -y nginx
 
-# Start Nginx service and allow it through the firewall
 sudo service nginx start
-sudo ufw allow 'Nginx HTTP'
+sudo ufw allow  'Nginx HTTP' # this is to enable the Nginx to use the firewall
 
-# Create a custom 404 page
+echo "Hello World!" | sudo tee /var/www/html/index.html
+
+# Define the replacement string directly in the script
+string_for_replacement='server_name _;rewrite ^/redirect_me https://github.com/stevovenom permanent;'
+
+# Perform the replacement using sed
+sudo sed -i "s|server_name _;|$string_for_replacement|" /etc/nginx/sites-enabled/default
+
+string_for_replacement="listen 80 default_server;\n\terror_page 404 /404.html;\n\tlocation = /404.html {\n\t\troot /var/www/html;\n\tinternal;\n\t}"
+
+# Perform the replacement using sed
+sudo sed -i "s|listen 80 default_server;|$string_for_replacement|" /etc/nginx/sites-enabled/default
+
+# create an error 404 page
 echo "Ceci n'est pas une page" | sudo tee /var/www/html/404.html
 
-# Customize the default Nginx configuration for 404 errors
-sudo bash -c 'cat > /etc/nginx/sites-available/default <<EOF
-server {
-    listen 80 default_server;
-    listen [::]:80 default_server;
-
-    root /var/www/html;
-    index index.html index.htm index.nginx-debian.html;
-
-    server_name _;
-
-    location / {
-        try_files \$uri \$uri/ =404;
-    }
-
-    error_page 404 /404.html;
-    location = /404.html {
-        root /var/www/html;
-        internal;
-    }
-}
-EOF'
-
-# Enable the new configuration by creating a symbolic link
-sudo ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/
-
-# Remove the default configuration link to avoid conflicts
-sudo rm /etc/nginx/sites-enabled/default
-
-# Test Nginx configuration and restart service
-sudo nginx -t && sudo service nginx restart
+sudo nginx -t
+sudo service nginx restart
