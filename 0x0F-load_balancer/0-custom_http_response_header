@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+# the configuration of teh web-0 to be identical to web-01
+
+sudo apt-get update
+sudo apt-get install -y nginx
+sudo service nginx start
+sudo ufw allow 'Nginx HTTP'
+
+# creating the index page
+echo "Hello World!" | sudo tee /var/www/html/index.html
+
+# Define the replacement string directly in the script, the redirection
+string_for_replacement='server_name _;rewrite ^/redirect_me https://github.com/stevovenom permanent;'
+
+# Perform the replacement using sed
+sudo sed -i "s|server_name _;|$string_for_replacement|" /etc/nginx/sites-enabled/default
+
+# create an error 404 page
+echo "Ceci n'est pas une page" | sudo tee /var/www/html/404.html
+
+# custom HTTP response header
+sudo sed -i "/server_name _;/a \    add_header X-Served-By $HOSTNAME;" /etc/nginx/sites-enabled/default
+
+sudo nginx -t
+sudo service nginx restart

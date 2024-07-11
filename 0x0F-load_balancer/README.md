@@ -75,7 +75,7 @@ curl -sI <ip-address>
 3. No response body.
 <br></br>
 
-<h2>Example Scenario:</h>
+<h2>Example Scenario:</h2>
 Status Check: If you want to quickly check if a server is up, or inspect headers like Content-Type or Cache-Control without downloading the entire content, you would use this command.<br></br>
 
 <code>curl -sI http://example.com</code>
@@ -88,4 +88,7 @@ The concepts to look at for this particular task are: <br>
 2. <a href="https://intranet.alxswe.com/concepts/68">Web stack Debugging </a>
 3. <a href="https://intranet.alxswe.com/rltoken/B7f3oz8i3Xvvom_YQZzLnQ">Introduction to load balancing and HAProxy </a>
 4. <a href="https://intranet.alxswe.com/rltoken/sZ9v3Vq2tgLwN_PWVQketw">HTTP header </a>
-5. <a href="https://intranet.alxswe.com/rltoken/2VRAgtKKR9g6Xfb0xzGiSg">Debian/Ubuntu HAPROXY packages </a>
+5. <a href="https://intranet.alxswe.com/rltoken/2VRAgtKKR9g6Xfb0xzGiSg">Debian/Ubuntu HAPROXY packages </a><br>
+
+
+curl -v <ip-address> is an http request header while curl -sI <ip-address> is used as http response header <br>
