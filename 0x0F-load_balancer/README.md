@@ -92,3 +92,130 @@ The concepts to look at for this particular task are: <br>
 
 
 curl -v <ip-address> is an http request header while curl -sI <ip-address> is used as http response header <br>
+
+
+To automate the task of adding a custom HTTP header with Puppet, you'll need to create a Puppet manifest file named named as per the stated task. This manifest will configure an Ubuntu machine to add the X-Served-By HTTP header with the value being the hostname of the server on which Nginx is running.<br>
+
+#Steps to Achieve the Task
+1. Install Puppet on the Server:<br>
+First, ensure that Puppet is installed on your server. You can follow the official Puppet installation instructions or use the commands below for an Ubuntu system.<br>
+
+<code>
+sudo apt update
+sudo apt install -y puppet
+</code><br>
+
+2. Create the Puppet Manifest:<br>
+Create a file named 2-puppet_custom_http_response_header.pp and add the necessary Puppet code to configure Nginx to include the custom HTTP header.<br>
+
+<code>
+sudo nano /etc/puppet/manifests/2-puppet_custom_http_response_header.pp
+</code><br>
+
+3. Puppet Manifest Content:<br>
+Add the following content to the 2-puppet_custom_http_response_header.pp file. This code will install Nginx, configure it to include the custom header, and ensure the Nginx service is running.<br>
+<code>
+#Ensure Nginx is installed
+package { 'nginx':
+  ensure => installed,
+}
+
+#Ensure the Nginx service is running
+service { 'nginx':
+  ensure => running,
+  enable => true,
+  require => Package['nginx'],
+}
+
+#Manage the Nginx configuration file
+file { '/etc/nginx/sites-available/default':
+  ensure  => file,
+  content => template('nginx/default.erb'),
+  require => Package['nginx'],
+  notify  => Service['nginx'],
+}
+
+#Ensure the /etc/nginx/sites-enabled/default is a symlink to the /etc/nginx/sites-available/default
+file { '/etc/nginx/sites-enabled/default':
+  ensure => link,
+  target => '/etc/nginx/sites-available/default',
+  require => File['/etc/nginx/sites-available/default'],
+  notify  => Service['nginx'],
+}
+
+#Manage the Nginx configuration template
+file { '/etc/puppet/modules/nginx/templates/default.erb':
+  ensure  => file,
+  content => epp('nginx/default.epp'),
+  require => Package['nginx'],
+}
+
+#EPP template for the Nginx configuration
+file { '/etc/puppet/modules/nginx/templates/default.epp':
+  ensure  => file,
+  content => '
+server {
+listen 80 default_server;
+listen [::]:80 default_server;
+
+
+root /var/www/html;
+index index.html index.htm index.nginx-debian.html;
+
+server_name _;
+
+location / {
+    try_files \$uri \$uri/ =404;
+    add_header X-Served-By \$hostname;
+}
+}
+",
+require => Package['nginx'],
+}
+</code><br>
+
+4. **Apply the Puppet Manifest**:
+Apply the Puppet manifest to configure the server.
+
+<code>
+sudo puppet apply /etc/puppet/manifests/2-puppet_custom_http_response_header.pp
+</code>
+
+5. Verify the Configuration
+Check Nginx Status and ensure Nginx is running.<br>
+
+<code>
+sudo systemctl status nginx
+</code><br>
+
+6. Test the HTTP Header:
+Use curl to verify that the custom HTTP header X-Served-By is included in the response and contains the server's hostname.
+
+<code>
+curl -I http://localhost
+</code><br>
+And by runnig the above command, You should see something like this in the response headers:
+<br>
+<i>
+
+HTTP/1.1 200 OK
+Server: nginx/1.18.0 (Ubuntu)
+Date: ...
+Content-Type: text/html
+Content-Length: ...
+Connection: keep-alive
+X-Served-By: your-server-hostname
+Puppet Manifest File Structure
+Ensure the directory structure is correct for the Puppet modules and templates:
+<br>
+
+/etc/puppet
+└── manifests
+    └── 2-puppet_custom_http_response_header.pp
+└── modules
+    └── nginx
+        └── templates
+            └── default.erb
+            └── default.epp
+<i><br>
+This setup should ensure that the custom HTTP header X-Served-By is added with the server's hostname as its value. If you encounter any issues, please provide the error messages or logs for further assistance.<br>
