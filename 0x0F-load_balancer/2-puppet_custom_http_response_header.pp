@@ -1,47 +1,28 @@
-# Install Nginx
+# Custom HTTP header in a nginx server
+# update ubuntu server
+exec { 'update server':
+  command  => 'apt-get update',
+  user     => 'root',
+  provider => 'shell',
+}
+->
+# install nginx web server on server
 package { 'nginx':
-  ensure => installed,
+  ensure   => present,
+  provider => 'apt'
 }
-
-# Ensure the Nginx service is running
+->
+# custom Nginx response header (X-Served-By: hostname)
+file_line { 'add HTTP header':
+  ensure => 'present',
+  path   => '/etc/nginx/sites-available/default',
+  after  => 'listen 80 default_server;',
+  line   => 'add_header X-Served-By $hostname;'
+}
+->
+# start service
 service { 'nginx':
-  ensure    => running,
-  enable    => true,
-  subscribe => File['/etc/nginx/sites-available/default'],
+  ensure  => 'running',
+  enable  => true,
+  require => Package['nginx']
 }
-
-# Define the custom HTTP header
-file { '/etc/nginx/sites-available/default':
-  ensure  => file,
-  content => template('nginx/default.erb'),
-  notify  => Service['nginx'],
-}
-
-# Create the template for the Nginx configuration
-file { '/etc/puppetlabs/code/environments/production/modules/nginx/templates/default.erb':
-  ensure  => file,
-  content => '
-server {
-    listen 80 default_server;
-    listen [::]:80 default_server;
-    server_name _;
-    root /var/www/html;
-
-    index index.html index.htm index.nginx-debian.html;
-
-    location / {
-        try_files $uri $uri/ =404;
-        add_header X-Served-By $hostname;
-    }
-
-    error_page 404 /404.html;
-        location = /40x.html {
-    }
-
-    error_page 500 502 503 504 /50x.html;
-        location = /50x.html {
-    }
-}
-',
-}
-
