@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+# teh installation of HAPROXY and its configuration
+
+sudo apt-get update
+sudo apt-get install -y haproxy
+
+# the edit of configuration files
+# edit config file
+server_config=\
+"
+frontend  stevovenom_frontend
+        bind *:80
+        mode http
+        default_backend stevovenom_backend
+backend stevovenom_backend
+        balance roundrobin
+        server 495864-web-01 54.172.227.90:80 check
+        server 495864-web-02 100.25.192.125:80 check
+"
+echo "$server_config" | sudo tee -a /etc/haproxy/haproxy.cfg
+
+# enable haproxy to be started by init script
+echo "ENABLED=1" | sudo tee -a /etc/default/haproxy
+
+# Testing the HAproxy configuration file
+sudo haproxy -c -f /etc/haproxy/haproxy.cfg
+# Restart the  service
+sudo service haproxy restart
