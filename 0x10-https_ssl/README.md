@@ -33,4 +33,7 @@ For this particular task, we need to Configure our domain zone so that the subdo
 Add the subdomain www to your domain, point it to your lb-01 IP (your domain name might be configured with default subdomains, feel free to remove them)
 1. Add the subdomain lb-01 to your domain, point it to your lb-01 IP
 2. Add the subdomain web-01 to your domain, point it to your web-01 IP
-3. Add the subdomain web-02 to your domain, point it to your web-02 IP<br>
+3. Add the subdomain web-02 to your domain, point it to your web-02 IP<br>i
+
+# Task 1
+for the completono of this task, folow through with this one: <a href="https://gbeminiyi.hashnode.dev/installing-certbot-in-your-haproxy-load-balancer-server">Installing Certbot in HAProxy</a>.
