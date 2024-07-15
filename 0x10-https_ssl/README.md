@@ -35,5 +35,281 @@ Add the subdomain www to your domain, point it to your lb-01 IP (your domain nam
 2. Add the subdomain web-01 to your domain, point it to your web-01 IP
 3. Add the subdomain web-02 to your domain, point it to your web-02 IP<br>i
 
+Also the 0-world_trial file also achieves teh said task. Though it is short, brief and precise and achieves the said task efficiently. <br>
 # Task 1
-for the completono of this task, folow through with this one: <a href="https://gbeminiyi.hashnode.dev/installing-certbot-in-your-haproxy-load-balancer-server">Installing Certbot in HAProxy</a>.
+for the completono of this task, folow through with this one: <a href="https://gbeminiyi.hashnode.dev/installing-certbot-in-your-haproxy-load-balancer-server">Installing Certbot in HAProxy</a>.<br>
+
+By following the steps in the link above, I made configuartions to teh haproxy files and reached a deadend<br>
+<code>
+ubuntu@495864-lb-01:~$ ls
+appending_the_config  installation  snap
+ubuntu@495864-lb-01:~$ sudo service haproxy start
+Job for haproxy.service failed because the control process exited with error code.
+See "systemctl status haproxy.service" and "journalctl -xe" for details.
+ubuntu@495864-lb-01:~$ systemctl status haproxy.service
+● haproxy.service - HAProxy Load Balancer
+     Loaded: loaded (/lib/systemd/system/haproxy.service; enabled; vendor preset: enabled)
+     Active: failed (Result: exit-code) since Mon 2024-07-15 09:55:09 UTC; 16s ago
+       Docs: man:haproxy(1)
+             file:/usr/share/doc/haproxy/configuration.txt.gz
+    Process: 84613 ExecStartPre=/usr/sbin/haproxy -Ws -f $CONFIG -c -q $EXTRAOPTS (code=exited, status=1/FAILURE)
+
+Jul 15 09:55:09 495864-lb-01 systemd[1]: haproxy.service: Control process exited, code=exited, status=1/FAILURE
+Jul 15 09:55:09 495864-lb-01 systemd[1]: haproxy.service: Failed with result 'exit-code'.
+Jul 15 09:55:09 495864-lb-01 systemd[1]: Failed to start HAProxy Load Balancer.
+Jul 15 09:55:09 495864-lb-01 systemd[1]: haproxy.service: Scheduled restart job, restart counter is at 5.
+Jul 15 09:55:09 495864-lb-01 systemd[1]: Stopped HAProxy Load Balancer.
+Jul 15 09:55:09 495864-lb-01 systemd[1]: haproxy.service: Start request repeated too quickly.
+Jul 15 09:55:09 495864-lb-01 systemd[1]: haproxy.service: Failed with result 'exit-code'.
+Jul 15 09:55:09 495864-lb-01 systemd[1]: Failed to start HAProxy Load Balancer.
+ubuntu@495864-lb-01:~$ journalctl -xe
+-- Defined-By: systemd
+-- Support: http://www.ubuntu.com/support
+-- 
+-- A start job for unit haproxy.service has finished with a failure.
+-- 
+-- The job identifier is 19109 and the job result is failed.
+Jul 15 09:55:09 495864-lb-01 systemd[1]: haproxy.service: Scheduled restart job, restart counter is at 5.
+-- Subject: Automatic restarting of a unit has been scheduled
+-- Defined-By: systemd
+-- Support: http://www.ubuntu.com/support
+-- 
+-- Automatic restarting of the unit haproxy.service has been scheduled, as the result for
+-- the configured Restart= setting for the unit.
+Jul 15 09:55:09 495864-lb-01 systemd[1]: Stopped HAProxy Load Balancer.
+-- Subject: A stop job for unit haproxy.service has finished
+-- Defined-By: systemd
+-- Support: http://www.ubuntu.com/support
+-- 
+-- A stop job for unit haproxy.service has finished.
+-- 
+-- The job identifier is 19192 and the job result is done.
+Jul 15 09:55:09 495864-lb-01 systemd[1]: haproxy.service: Start request repeated too quickly.
+Jul 15 09:55:09 495864-lb-01 systemd[1]: haproxy.service: Failed with result 'exit-code'.
+-- Subject: Unit failed
+-- Defined-By: systemd
+-- Support: http://www.ubuntu.com/support
+-- 
+-- The unit haproxy.service has entered the 'failed' state with result 'exit-code'.
+Jul 15 09:55:09 495864-lb-01 systemd[1]: Failed to start HAProxy Load Balancer.
+-- Subject: A start job for unit haproxy.service has failed
+-- Defined-By: systemd
+-- Support: http://www.ubuntu.com/support
+-- 
+-- A start job for unit haproxy.service has finished with a failure.
+-- 
+-- The job identifier is 19192 and the job result is failed.
+...skipping...
+-- Defined-By: systemd
+-- Support: http://www.ubuntu.com/support
+-- 
+ubuntu@495864-lb-01:~$ cd /etc/haproxy
+ubuntu@495864-lb-01:/etc/haproxy$ ls
+certs  errors  haproxy.cfg
+ubuntu@495864-lb-01:/etc/haproxy$ sudo vim haproxy.cfg
+ubuntu@495864-lb-01:/etc/haproxy$ sudo service haproxy start
+ubuntu@495864-lb-01:/etc/haproxy$ sudo journalctl -u haproxy.service --since "10 minutes ago"
+-- Logs begin at Thu 2024-07-11 07:51:57 UTC, end at Mon 2024-07-15 09:59:31 UTC. --
+-- Logs begin at Thu 2024-07-11 07:51:57 UTC, end at Mon 2024-07-15 09:59:31 UTC. --
+Jul 15 09:50:24 495864-lb-01 systemd[1]: Starting HAProxy Load Balancer...
+Jul 15 09:50:24 495864-lb-01 haproxy[84411]: [ALERT] 196/095024 (84411) : parsing [/etc/haproxy/haproxy.cfg:38] : 'bind *:443' : unable to load SSL >
+Jul 15 09:50:24 495864-lb-01 haproxy[84411]: [ALERT] 196/095024 (84411) : Error(s) found in configuration file : /etc/haproxy/haproxy.cfg
+Jul 15 09:50:24 495864-lb-01 haproxy[84411]: [ALERT] 196/095024 (84411) : Fatal errors found in configuration.
+Jul 15 09:50:24 495864-lb-01 systemd[1]: haproxy.service: Control process exited, code=exited, status=1/FAILURE
+Jul 15 09:50:24 495864-lb-01 systemd[1]: haproxy.service: Failed with result 'exit-code'.
+Jul 15 09:50:24 495864-lb-01 systemd[1]: Failed to start HAProxy Load Balancer.
+Jul 15 09:50:25 495864-lb-01 systemd[1]: haproxy.service: Scheduled restart job, restart counter is at 1.
+Jul 15 09:50:25 495864-lb-01 systemd[1]: Stopped HAProxy Load Balancer.
+Jul 15 09:50:25 495864-lb-01 systemd[1]: Starting HAProxy Load Balancer...
+Jul 15 09:50:25 495864-lb-01 haproxy[84413]: [ALERT] 196/095025 (84413) : parsing [/etc/haproxy/haproxy.cfg:38] : 'bind *:443' : unable to load SSL >
+Jul 15 09:50:25 495864-lb-01 haproxy[84413]: [ALERT] 196/095025 (84413) : Error(s) found in configuration file : /etc/haproxy/haproxy.cfg
+Jul 15 09:50:25 495864-lb-01 haproxy[84413]: [ALERT] 196/095025 (84413) : Fatal errors found in configuration.
+Jul 15 09:50:25 495864-lb-01 systemd[1]: haproxy.service: Control process exited, code=exited, status=1/FAILURE
+Jul 15 09:50:25 495864-lb-01 systemd[1]: haproxy.service: Failed with result 'exit-code'.
+Jul 15 09:50:25 495864-lb-01 systemd[1]: Failed to start HAProxy Load Balancer.
+Jul 15 09:50:25 495864-lb-01 systemd[1]: haproxy.service: Scheduled restart job, restart counter is at 2.
+Jul 15 09:50:25 495864-lb-01 systemd[1]: Stopped HAProxy Load Balancer.
+Jul 15 09:50:25 495864-lb-01 systemd[1]: Starting HAProxy Load Balancer...
+Jul 15 09:50:25 495864-lb-01 haproxy[84415]: [ALERT] 196/095025 (84415) : parsing [/etc/haproxy/haproxy.cfg:38] : 'bind *:443' : unable to load SSL >
+Jul 15 09:50:25 495864-lb-01 haproxy[84415]: [ALERT] 196/095025 (84415) : Error(s) found in configuration file : /etc/haproxy/haproxy.cfg
+Jul 15 09:50:25 495864-lb-01 haproxy[84415]: [ALERT] 196/095025 (84415) : Fatal errors found in configuration.
+Jul 15 09:50:25 495864-lb-01 systemd[1]: haproxy.service: Control process exited, code=exited, status=1/FAILURE
+Jul 15 09:50:25 495864-lb-01 systemd[1]: haproxy.service: Failed with result 'exit-code'.
+Jul 15 09:50:25 495864-lb-01 systemd[1]: Failed to start HAProxy Load Balancer.
+Jul 15 09:50:25 495864-lb-01 systemd[1]: haproxy.service: Scheduled restart job, restart counter is at 3.
+Jul 15 09:50:25 495864-lb-01 systemd[1]: Stopped HAProxy Load Balancer.
+Jul 15 09:50:25 495864-lb-01 systemd[1]: Starting HAProxy Load Balancer...
+Jul 15 09:50:25 495864-lb-01 haproxy[84417]: [ALERT] 196/095025 (84417) : parsing [/etc/haproxy/haproxy.cfg:38] : 'bind *:443' : unable to load SSL >
+Jul 15 09:50:25 495864-lb-01 haproxy[84417]: [ALERT] 196/095025 (84417) : Error(s) found in configuration file : /etc/haproxy/haproxy.cfg
+Jul 15 09:50:25 495864-lb-01 haproxy[84417]: [ALERT] 196/095025 (84417) : Fatal errors found in configuration.
+Jul 15 09:50:25 495864-lb-01 systemd[1]: haproxy.service: Control process exited, code=exited, status=1/FAILURE
+Jul 15 09:50:25 495864-lb-01 systemd[1]: haproxy.service: Failed with result 'exit-code'.
+Jul 15 09:50:25 495864-lb-01 systemd[1]: Failed to start HAProxy Load Balancer.
+Jul 15 09:50:26 495864-lb-01 systemd[1]: haproxy.service: Scheduled restart job, restart counter is at 4.
+Jul 15 09:50:26 495864-lb-01 systemd[1]: Stopped HAProxy Load Balancer.
+Jul 15 09:50:26 495864-lb-01 systemd[1]: Starting HAProxy Load Balancer...
+Jul 15 09:50:26 495864-lb-01 haproxy[84419]: [ALERT] 196/095026 (84419) : parsing [/etc/haproxy/haproxy.cfg:38] : 'bind *:443' : unable to load SSL >
+Jul 15 09:50:26 495864-lb-01 haproxy[84419]: [ALERT] 196/095026 (84419) : Error(s) found in configuration file : /etc/haproxy/haproxy.cfg
+Jul 15 09:50:26 495864-lb-01 haproxy[84419]: [ALERT] 196/095026 (84419) : Fatal errors found in configuration.
+Jul 15 09:50:26 495864-lb-01 systemd[1]: haproxy.service: Control process exited, code=exited, status=1/FAILURE
+Jul 15 09:50:26 495864-lb-01 systemd[1]: haproxy.service: Failed with result 'exit-code'.
+Jul 15 09:50:26 495864-lb-01 systemd[1]: Failed to start HAProxy Load Balancer.
+Jul 15 09:50:26 495864-lb-01 systemd[1]: haproxy.service: Scheduled restart job, restart counter is at 5.
+Jul 15 09:50:26 495864-lb-01 systemd[1]: Stopped HAProxy Load Balancer.
+Jul 15 09:50:26 495864-lb-01 systemd[1]: haproxy.service: Start request repeated too quickly.
+Jul 15 09:50:26 495864-lb-01 systemd[1]: haproxy.service: Failed with result 'exit-code'.
+Jul 15 09:50:26 495864-lb-01 systemd[1]: Failed to start HAProxy Load Balancer.
+Jul 15 09:50:37 495864-lb-01 systemd[1]: Starting HAProxy Load Balancer...
+Jul 15 09:50:37 495864-lb-01 haproxy[84424]: [ALERT] 196/095037 (84424) : parsing [/etc/haproxy/haproxy.cfg:38] : 'bind *:443' : unable to load SSL >
+Jul 15 09:50:37 495864-lb-01 haproxy[84424]: [ALERT] 196/095037 (84424) : Error(s) found in configuration file : /etc/haproxy/haproxy.cfg
+Jul 15 09:50:37 495864-lb-01 haproxy[84424]: [ALERT] 196/095037 (84424) : Fatal errors found in configuration.
+Jul 15 09:50:37 495864-lb-01 systemd[1]: haproxy.service: Control process exited, code=exited, status=1/FAILURE
+Jul 15 09:50:37 495864-lb-01 systemd[1]: haproxy.service: Failed with result 'exit-code'.
+Jul 15 09:50:37 495864-lb-01 systemd[1]: Failed to start HAProxy Load Balancer.
+Jul 15 09:50:37 495864-lb-01 systemd[1]: haproxy.service: Scheduled restart job, restart counter is at 1.
+Jul 15 09:50:37 495864-lb-01 systemd[1]: Stopped HAProxy Load Balancer.
+Jul 15 09:50:37 495864-lb-01 systemd[1]: Starting HAProxy Load Balancer...
+Jul 15 09:50:37 495864-lb-01 haproxy[84426]: [ALERT] 196/095037 (84426) : parsing [/etc/haproxy/haproxy.cfg:38] : 'bind *:443' : unable to load SSL >
+Jul 15 09:50:37 495864-lb-01 haproxy[84426]: [ALERT] 196/095037 (84426) : Error(s) found in configuration file : /etc/haproxy/haproxy.cfg
+Jul 15 09:50:37 495864-lb-01 haproxy[84426]: [ALERT] 196/095037 (84426) : Fatal errors found in configuration.
+Jul 15 09:50:37 495864-lb-01 systemd[1]: haproxy.service: Control process exited, code=exited, status=1/FAILURE
+Jul 15 09:50:37 495864-lb-01 systemd[1]: haproxy.service: Failed with result 'exit-code'.
+Jul 15 09:50:37 495864-lb-01 systemd[1]: Failed to start HAProxy Load Balancer.
+Jul 15 09:50:37 495864-lb-01 systemd[1]: haproxy.service: Scheduled restart job, restart counter is at 2.
+Jul 15 09:50:37 495864-lb-01 systemd[1]: Stopped HAProxy Load Balancer.
+Jul 15 09:50:37 495864-lb-01 systemd[1]: Starting HAProxy Load Balancer...
+Jul 15 09:50:37 495864-lb-01 haproxy[84428]: [ALERT] 196/095037 (84428) : parsing [/etc/haproxy/haproxy.cfg:38] : 'bind *:443' : unable to load SSL >
+Jul 15 09:50:37 495864-lb-01 haproxy[84428]: [ALERT] 196/095037 (84428) : Error(s) found in configuration file : /etc/haproxy/haproxy.cfg
+Jul 15 09:50:37 495864-lb-01 haproxy[84428]: [ALERT] 196/095037 (84428) : Fatal errors found in configuration.
+Jul 15 09:50:37 495864-lb-01 systemd[1]: haproxy.service: Control process exited, code=exited, status=1/FAILURE
+Jul 15 09:50:37 495864-lb-01 systemd[1]: haproxy.service: Failed with result 'exit-code'.
+Jul 15 09:50:37 495864-lb-01 systemd[1]: Failed to start HAProxy Load Balancer.
+Jul 15 09:50:38 495864-lb-01 systemd[1]: haproxy.service: Scheduled restart job, restart counter is at 3.
+Jul 15 09:50:38 495864-lb-01 systemd[1]: Stopped HAProxy Load Balancer.
+Jul 15 09:50:38 495864-lb-01 systemd[1]: Starting HAProxy Load Balancer...
+Jul 15 09:50:38 495864-lb-01 haproxy[84430]: [ALERT] 196/095038 (84430) : parsing [/etc/haproxy/haproxy.cfg:38] : 'bind *:443' : unable to load SSL >
+Jul 15 09:50:38 495864-lb-01 haproxy[84430]: [ALERT] 196/095038 (84430) : Error(s) found in configuration file : /etc/haproxy/haproxy.cfg
+Jul 15 09:50:38 495864-lb-01 haproxy[84430]: [ALERT] 196/095038 (84430) : Fatal errors found in configuration.
+Jul 15 09:50:38 495864-lb-01 systemd[1]: haproxy.service: Control process exited, code=exited, status=1/FAILURE
+Jul 15 09:50:38 495864-lb-01 systemd[1]: haproxy.service: Failed with result 'exit-code'.
+Jul 15 09:50:38 495864-lb-01 systemd[1]: Failed to start HAProxy Load Balancer.
+Jul 15 09:50:38 495864-lb-01 systemd[1]: haproxy.service: Scheduled restart job, restart counter is at 4.
+Jul 15 09:50:38 495864-lb-01 systemd[1]: Stopped HAProxy Load Balancer.
+Jul 15 09:50:38 495864-lb-01 systemd[1]: Starting HAProxy Load Balancer...
+Jul 15 09:50:38 495864-lb-01 haproxy[84432]: [ALERT] 196/095038 (84432) : parsing [/etc/haproxy/haproxy.cfg:38] : 'bind *:443' : unable to load SSL >
+Jul 15 09:50:38 495864-lb-01 haproxy[84432]: [ALERT] 196/095038 (84432) : Error(s) found in configuration file : /etc/haproxy/haproxy.cfg
+Jul 15 09:50:38 495864-lb-01 haproxy[84432]: [ALERT] 196/095038 (84432) : Fatal errors found in configuration.
+Jul 15 09:50:38 495864-lb-01 systemd[1]: haproxy.service: Control process exited, code=exited, status=1/FAILURE
+Jul 15 09:50:38 495864-lb-01 systemd[1]: haproxy.service: Failed with result 'exit-code'.
+Jul 15 09:50:38 495864-lb-01 systemd[1]: Failed to start HAProxy Load Balancer.
+Jul 15 09:50:38 495864-lb-01 systemd[1]: haproxy.service: Scheduled restart job, restart counter is at 5.
+Jul 15 09:50:38 495864-lb-01 systemd[1]: Stopped HAProxy Load Balancer.
+Jul 15 09:50:38 495864-lb-01 systemd[1]: haproxy.service: Start request repeated too quickly.
+Jul 15 09:50:38 495864-lb-01 systemd[1]: haproxy.service: Failed with result 'exit-code'.
+Jul 15 09:50:38 495864-lb-01 systemd[1]: Failed to start HAProxy Load Balancer.
+Jul 15 09:53:12 495864-lb-01 systemd[1]: Starting HAProxy Load Balancer...
+Jul 15 09:53:12 495864-lb-01 haproxy[84449]: [ALERT] 196/095312 (84449) : parsing [/etc/haproxy/haproxy.cfg:38] : 'bind *:443' : unable to load SSL >
+Jul 15 09:53:12 495864-lb-01 haproxy[84449]: [ALERT] 196/095312 (84449) : Error(s) found in configuration file : /etc/haproxy/haproxy.cfg
+Jul 15 09:53:12 495864-lb-01 haproxy[84449]: [ALERT] 196/095312 (84449) : Fatal errors found in configuration.
+Jul 15 09:53:12 495864-lb-01 systemd[1]: haproxy.service: Control process exited, code=exited, status=1/FAILURE
+Jul 15 09:53:12 495864-lb-01 systemd[1]: haproxy.service: Failed with result 'exit-code'.
+Jul 15 09:53:12 495864-lb-01 systemd[1]: Failed to start HAProxy Load Balancer.
+Jul 15 09:53:13 495864-lb-01 systemd[1]: haproxy.service: Scheduled restart job, restart counter is at 1.
+Jul 15 09:53:13 495864-lb-01 systemd[1]: Stopped HAProxy Load Balancer.
+Jul 15 09:53:13 495864-lb-01 systemd[1]: Starting HAProxy Load Balancer...
+Jul 15 09:53:13 495864-lb-01 haproxy[84451]: [ALERT] 196/095313 (84451) : parsing [/etc/haproxy/haproxy.cfg:38] : 'bind *:443' : unable to load SSL >
+Jul 15 09:53:13 495864-lb-01 haproxy[84451]: [ALERT] 196/095313 (84451) : Error(s) found in configuration file : /etc/haproxy/haproxy.cfg
+Jul 15 09:53:13 495864-lb-01 haproxy[84451]: [ALERT] 196/095313 (84451) : Fatal errors found in configuration.
+Jul 15 09:53:13 495864-lb-01 systemd[1]: haproxy.service: Control process exited, code=exited, status=1/FAILURE
+Jul 15 09:53:13 495864-lb-01 systemd[1]: haproxy.service: Failed with result 'exit-code'.
+Jul 15 09:53:13 495864-lb-01 systemd[1]: Failed to start HAProxy Load Balancer.
+Jul 15 09:53:13 495864-lb-01 systemd[1]: haproxy.service: Scheduled restart job, restart counter is at 2.
+Jul 15 09:53:13 495864-lb-01 systemd[1]: Stopped HAProxy Load Balancer.
+Jul 15 09:53:13 495864-lb-01 systemd[1]: Starting HAProxy Load Balancer...
+Jul 15 09:53:13 495864-lb-01 haproxy[84453]: [ALERT] 196/095313 (84453) : parsing [/etc/haproxy/haproxy.cfg:38] : 'bind *:443' : unable to load SSL >
+Jul 15 09:53:13 495864-lb-01 haproxy[84453]: [ALERT] 196/095313 (84453) : Error(s) found in configuration file : /etc/haproxy/haproxy.cfg
+Jul 15 09:53:13 495864-lb-01 haproxy[84453]: [ALERT] 196/095313 (84453) : Fatal errors found in configuration.
+Jul 15 09:53:13 495864-lb-01 systemd[1]: haproxy.service: Control process exited, code=exited, status=1/FAILURE
+Jul 15 09:53:13 495864-lb-01 systemd[1]: haproxy.service: Failed with result 'exit-code'.
+Jul 15 09:53:13 495864-lb-01 systemd[1]: Failed to start HAProxy Load Balancer.
+Jul 15 09:53:13 495864-lb-01 systemd[1]: haproxy.service: Scheduled restart job, restart counter is at 3.
+Jul 15 09:53:13 495864-lb-01 systemd[1]: Stopped HAProxy Load Balancer.
+Jul 15 09:53:13 495864-lb-01 systemd[1]: Starting HAProxy Load Balancer...
+Jul 15 09:53:13 495864-lb-01 haproxy[84455]: [ALERT] 196/095313 (84455) : parsing [/etc/haproxy/haproxy.cfg:38] : 'bind *:443' : unable to load SSL >
+Jul 15 09:53:13 495864-lb-01 haproxy[84455]: [ALERT] 196/095313 (84455) : Error(s) found in configuration file : /etc/haproxy/haproxy.cfg
+Jul 15 09:53:13 495864-lb-01 haproxy[84455]: [ALERT] 196/095313 (84455) : Fatal errors found in configuration.
+Jul 15 09:53:13 495864-lb-01 systemd[1]: haproxy.service: Control process exited, code=exited, status=1/FAILURE
+Jul 15 09:53:13 495864-lb-01 systemd[1]: haproxy.service: Failed with result 'exit-code'.
+Jul 15 09:53:13 495864-lb-01 systemd[1]: Failed to start HAProxy Load Balancer.
+Jul 15 09:53:13 495864-lb-01 systemd[1]: haproxy.service: Scheduled restart job, restart counter is at 4.
+Jul 15 09:53:13 495864-lb-01 systemd[1]: Stopped HAProxy Load Balancer.
+Jul 15 09:53:13 495864-lb-01 systemd[1]: Starting HAProxy Load Balancer...
+Jul 15 09:53:13 495864-lb-01 haproxy[84457]: [ALERT] 196/095313 (84457) : parsing [/etc/haproxy/haproxy.cfg:38] : 'bind *:443' : unable to load SSL >
+Jul 15 09:53:13 495864-lb-01 haproxy[84457]: [ALERT] 196/095313 (84457) : Error(s) found in configuration file : /etc/haproxy/haproxy.cfg
+Jul 15 09:53:13 495864-lb-01 haproxy[84457]: [ALERT] 196/095313 (84457) : Fatal errors found in configuration.
+Jul 15 09:53:13 495864-lb-01 systemd[1]: haproxy.service: Control process exited, code=exited, status=1/FAILURE
+Jul 15 09:53:13 495864-lb-01 systemd[1]: haproxy.service: Failed with result 'exit-code'.
+Jul 15 09:53:13 495864-lb-01 systemd[1]: Failed to start HAProxy Load Balancer.
+Jul 15 09:53:14 495864-lb-01 systemd[1]: haproxy.service: Scheduled restart job, restart counter is at 5.
+Jul 15 09:53:14 495864-lb-01 systemd[1]: Stopped HAProxy Load Balancer.
+Jul 15 09:53:14 495864-lb-01 systemd[1]: haproxy.service: Start request repeated too quickly.
+Jul 15 09:53:14 495864-lb-01 systemd[1]: haproxy.service: Failed with result 'exit-code'.
+Jul 15 09:53:14 495864-lb-01 systemd[1]: Failed to start HAProxy Load Balancer.
+Jul 15 09:55:07 495864-lb-01 systemd[1]: Starting HAProxy Load Balancer...
+Jul 15 09:55:07 495864-lb-01 haproxy[84605]: [ALERT] 196/095507 (84605) : parsing [/etc/haproxy/haproxy.cfg:38] : 'bind *:443' : unable to load SSL >
+Jul 15 09:55:07 495864-lb-01 haproxy[84605]: [ALERT] 196/095507 (84605) : Error(s) found in configuration file : /etc/haproxy/haproxy.cfg
+Jul 15 09:55:07 495864-lb-01 haproxy[84605]: [ALERT] 196/095507 (84605) : Fatal errors found in configuration.
+Jul 15 09:55:07 495864-lb-01 systemd[1]: haproxy.service: Control process exited, code=exited, status=1/FAILURE
+Jul 15 09:55:07 495864-lb-01 systemd[1]: haproxy.service: Failed with result 'exit-code'.
+Jul 15 09:55:07 495864-lb-01 systemd[1]: Failed to start HAProxy Load Balancer.
+Jul 15 09:55:08 495864-lb-01 systemd[1]: haproxy.service: Scheduled restart job, restart counter is at 1.
+Jul 15 09:55:08 495864-lb-01 systemd[1]: Stopped HAProxy Load Balancer.
+Jul 15 09:55:08 495864-lb-01 systemd[1]: Starting HAProxy Load Balancer...
+Jul 15 09:55:08 495864-lb-01 haproxy[84607]: [ALERT] 196/095508 (84607) : parsing [/etc/haproxy/haproxy.cfg:38] : 'bind *:443' : unable to load SSL >
+Jul 15 09:55:08 495864-lb-01 haproxy[84607]: [ALERT] 196/095508 (84607) : Error(s) found in configuration file : /etc/haproxy/haproxy.cfg
+Jul 15 09:55:08 495864-lb-01 haproxy[84607]: [ALERT] 196/095508 (84607) : Fatal errors found in configuration.
+Jul 15 09:55:08 495864-lb-01 systemd[1]: haproxy.service: Control process exited, code=exited, status=1/FAILURE
+Jul 15 09:55:08 495864-lb-01 systemd[1]: haproxy.service: Failed with result 'exit-code'.
+Jul 15 09:55:08 495864-lb-01 systemd[1]: Failed to start HAProxy Load Balancer.
+Jul 15 09:55:08 495864-lb-01 systemd[1]: haproxy.service: Scheduled restart job, restart counter is at 2.
+Jul 15 09:55:08 495864-lb-01 systemd[1]: Stopped HAProxy Load Balancer.
+Jul 15 09:55:08 495864-lb-01 systemd[1]: Starting HAProxy Load Balancer...
+Jul 15 09:55:08 495864-lb-01 haproxy[84609]: [ALERT] 196/095508 (84609) : parsing [/etc/haproxy/haproxy.cfg:38] : 'bind *:443' : unable to load SSL >
+Jul 15 09:55:08 495864-lb-01 haproxy[84609]: [ALERT] 196/095508 (84609) : Error(s) found in configuration file : /etc/haproxy/haproxy.cfg
+Jul 15 09:55:08 495864-lb-01 haproxy[84609]: [ALERT] 196/095508 (84609) : Fatal errors found in configuration.
+Jul 15 09:55:08 495864-lb-01 systemd[1]: haproxy.service: Control process exited, code=exited, status=1/FAILURE
+Jul 15 09:55:08 495864-lb-01 systemd[1]: haproxy.service: Failed with result 'exit-code'.
+Jul 15 09:55:08 495864-lb-01 systemd[1]: Failed to start HAProxy Load Balancer.
+Jul 15 09:55:08 495864-lb-01 systemd[1]: haproxy.service: Scheduled restart job, restart counter is at 3.
+Jul 15 09:55:08 495864-lb-01 systemd[1]: Stopped HAProxy Load Balancer.
+Jul 15 09:55:08 495864-lb-01 systemd[1]: Starting HAProxy Load Balancer...
+Jul 15 09:55:08 495864-lb-01 haproxy[84611]: [ALERT] 196/095508 (84611) : parsing [/etc/haproxy/haproxy.cfg:38] : 'bind *:443' : unable to load SSL >
+Jul 15 09:55:08 495864-lb-01 haproxy[84611]: [ALERT] 196/095508 (84611) : Error(s) found in configuration file : /etc/haproxy/haproxy.cfg
+Jul 15 09:55:08 495864-lb-01 haproxy[84611]: [ALERT] 196/095508 (84611) : Fatal errors found in configuration.
+Jul 15 09:55:08 495864-lb-01 systemd[1]: haproxy.service: Control process exited, code=exited, status=1/FAILURE
+Jul 15 09:55:08 495864-lb-01 systemd[1]: haproxy.service: Failed with result 'exit-code'.
+Jul 15 09:55:08 495864-lb-01 systemd[1]: Failed to start HAProxy Load Balancer.
+Jul 15 09:55:09 495864-lb-01 systemd[1]: haproxy.service: Scheduled restart job, restart counter is at 4.
+Jul 15 09:55:09 495864-lb-01 systemd[1]: Stopped HAProxy Load Balancer.
+Jul 15 09:55:09 495864-lb-01 systemd[1]: Starting HAProxy Load Balancer...
+Jul 15 09:55:09 495864-lb-01 haproxy[84613]: [ALERT] 196/095509 (84613) : parsing [/etc/haproxy/haproxy.cfg:38] : 'bind *:443' : unable to load SSL >
+Jul 15 09:55:09 495864-lb-01 haproxy[84613]: [ALERT] 196/095509 (84613) : Error(s) found in configuration file : /etc/haproxy/haproxy.cfg
+Jul 15 09:55:09 495864-lb-01 haproxy[84613]: [ALERT] 196/095509 (84613) : Fatal errors found in configuration.
+Jul 15 09:55:09 495864-lb-01 systemd[1]: haproxy.service: Control process exited, code=exited, status=1/FAILURE
+Jul 15 09:55:09 495864-lb-01 systemd[1]: haproxy.service: Failed with result 'exit-code'.
+Jul 15 09:55:09 495864-lb-01 systemd[1]: Failed to start HAProxy Load Balancer.
+Jul 15 09:55:09 495864-lb-01 systemd[1]: haproxy.service: Scheduled restart job, restart counter is at 5.
+Jul 15 09:55:09 495864-lb-01 systemd[1]: Stopped HAProxy Load Balancer.
+Jul 15 09:55:09 495864-lb-01 systemd[1]: haproxy.service: Start request repeated too quickly.
+Jul 15 09:55:09 495864-lb-01 systemd[1]: haproxy.service: Failed with result 'exit-code'.
+Jul 15 09:55:09 495864-lb-01 systemd[1]: Failed to start HAProxy Load Balancer.
+Jul 15 09:58:42 495864-lb-01 systemd[1]: Starting HAProxy Load Balancer...
+Jul 15 09:58:42 495864-lb-01 haproxy[84637]: Proxy stevovenom_frontend started.
+Jul 15 09:58:42 495864-lb-01 haproxy[84637]: Proxy stevovenom_frontend started.
+Jul 15 09:58:42 495864-lb-01 haproxy[84637]: Proxy stevovenom_backend started.
+Jul 15 09:58:42 495864-lb-01 haproxy[84637]: Proxy stevovenom_backend started.
+Jul 15 09:58:42 495864-lb-01 haproxy[84637]: [NOTICE] 196/095842 (84637) : New worker #1 (84639) forked
+Jul 15 09:58:42 495864-lb-01 systemd[1]: Started HAProxy Load Balancer.
+</code><br>
+For easier debugging and getting on track, follow through here:<br>
+<a href="https://chatgpt.com/share/0451db47-19f6-47d9-a3ae-bc7ba7b4a8a4">Debugging and getting back on track</a>
