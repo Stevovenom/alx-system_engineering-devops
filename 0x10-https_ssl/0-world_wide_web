@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+# Function to get information about a subdomain
+
+get_subdomain_info() {
+	local subdomain=$1
+	local domain=$2
+	local full_domain="${subdomain}.${domain}"
+	local result
+	
+	result=$(dig +short "${full_domain}")
+	
+	if [[ -z $result ]]; then
+		echo "The subdomain ${subdomain} does not exist."
+	else
+		local record_type="A"
+		
+		echo "The subdomain ${subdomain} is a ${record_type} record and points to ${result}"
+	fi
+}
+
+# Main script logic
+domain=$1
+subdomain=$2
+
+if [[ -z $domain ]]; then
+	echo "Usage: $0 domain [subdomain]"
+	exit 1
+fi
+
+# If only domain is provided, check default subdomains
+if [[ -z $subdomain ]]; then
+	subdomains=("www" "lb-01" "web-01" "web-02")
+	
+	for sub in "${subdomains[@]}"; do
+		get_subdomain_info "$sub" "$domain"
+	done
+else
+	get_subdomain_info "$subdomain" "$domain"
+fi
+
