@@ -313,3 +313,9 @@ Jul 15 09:58:42 495864-lb-01 systemd[1]: Started HAProxy Load Balancer.
 </code><br>
 For easier debugging and getting on track, follow through here:<br>
 <a href="https://chatgpt.com/share/0451db47-19f6-47d9-a3ae-bc7ba7b4a8a4">Debugging and getting back on track</a>
+
+
+The best thing to do is to work with the haproxy running, te changes made will only be applied if you run the command: <br>
+<code>
+sudo service haproxy restart
+</code>
