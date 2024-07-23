@@ -15,4 +15,4 @@ After this, you can test the query by runnig mysql -uholberton_user -p -e 'SELEC
 | replica_user     | Y               |
 +------------------+-----------------+
 
-as the output
+as the output of the query
