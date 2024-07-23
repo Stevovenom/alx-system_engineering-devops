@@ -1,0 +1,18 @@
+CREATE USER 'replica_user'@'%' IDENTIFIED BY 'yourpassword';
+GRANT REPLICATION SLAVE ON *.* TO 'replica_user'@'%';
+FLUSH PRIVILEGES;
+
+After this, you can test the query by runnig mysql -uholberton_user -p -e 'SELECT user, Repl_slave_priv FROM mysql.user'which should be having 
+
++------------------+-----------------+
+| user             | Repl_slave_priv |
++------------------+-----------------+
+| root             | Y               |
+| mysql.session    | N               |
+| mysql.sys        | N               |
+| debian-sys-maint | Y               |
+| holberton_user   | N               |
+| replica_user     | Y               |
++------------------+-----------------+
+
+as the output
