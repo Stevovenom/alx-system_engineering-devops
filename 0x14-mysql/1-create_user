@@ -1,0 +1,5 @@
+CREATE USER 'holberton_user'@'localhost' IDENTIFIED BY 'projectcorrection280hbtn';
+GRANT REPLICATION CLIENT ON *.* TO 'holberton_user'@'localhost';
+FLUSH PRIVILEGES;
+
+Th script above is to be executed in bothh web-01 and web-02 for successful completion of the task 1.
