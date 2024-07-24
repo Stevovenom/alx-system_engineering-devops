@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+
+# Check if the script received exactly one argument
+if [ "$#" -ne 1 ]; then
+  echo "Usage: $0 <mysql_root_password>"
+  exit 1
+fi
+
+# Assign the argument to a variable
+MYSQL_ROOT_PASSWORD=$1
+
+# Generate the MySQL dump and name it backup.sql
+mysqldump -u root -p"$MYSQL_ROOT_PASSWORD" --all-databases > backup.sql
+
+# Check if the dump was created successfully
+if [ $? -ne 0 ]; then
+  echo "Failed to create MySQL dump"
+  exit 1
+fi
+
+# Get the current date and time in day-month-year_hour-minute-second format
+CURRENT_DATE=$(date +%d-%m-%Y_%H-%M-%S)
+
+# Create a compressed archive of the dump file
+tar -czvf "$CURRENT_DATE.tar.gz" backup.sql
+
+# Check if the archive was created successfully
+if [ $? -ne 0 ]; then
+  echo "Failed to create compressed archive"
+  exit 1
+fi
+
+# Commented out the line to remove the backup.sql file
+# rm backup.sql
+
+echo "Backup successful: $CURRENT_DATE.tar.gz"
+
+te that this script should be executed in one of our web servers but most likely in our web-01 server
