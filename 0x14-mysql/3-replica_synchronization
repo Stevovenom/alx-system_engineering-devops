@@ -16,3 +16,8 @@ After this, you can test the query by runnig mysql -uholberton_user -p -e 'SELEC
 +------------------+-----------------+
 
 as the output of the query
+Though the script mysql -uholberton_user -p -e 'SELECT user, Repl_slave_priv FROM mysql.user' may not run and the checker will not mark since you will be forced to alter the priveileges of the holberton_user to allow her to have select permissions using the query:
+
+GRANT SELECT ON mysql.user TO 'holberton_user'@'localhost';
+FLUSH PRIVILEGES;
+
