@@ -17,16 +17,18 @@ if __name__ == "__main__":
         sys.exit(1)
 
     # Fetch user information
-    user_response = requests.get(f"https://jsonplaceholder.typicode.com/users/{userId}")
+    user_response = requests.get(
+        f"https://jsonplaceholder.typicode.com/users/{userId}")
     if user_response.status_code != 200:
         print("Error fetching user data from the API.")
         sys.exit(1)
-    
+
     user_data = user_response.json()
     employee_name = user_data.get('name')
 
     # Fetch TODO list
-    todos_response = requests.get(f"https://jsonplaceholder.typicode.com/todos?userId={userId}")
+    todos_response = requests.get(
+        f"https://jsonplaceholder.typicode.com/todos?userId={userId}")
     if todos_response.status_code != 200:
         print("Error fetching todos data from the API.")
         sys.exit(1)
@@ -36,6 +38,8 @@ if __name__ == "__main__":
     completed_tasks = [task for task in todos_data if task.get('completed')]
 
     # Display TODO list progress
-    print(f"Employee {employee_name} is done with tasks({len(completed_tasks)}/{total_tasks}):")
+    print(
+        f"Employee {employee_name} is done with tasks({len(completed_tasks)
+                                                       }/{total_tasks}): ")
     for task in completed_tasks:
         print(f"\t {task.get('title')}")
