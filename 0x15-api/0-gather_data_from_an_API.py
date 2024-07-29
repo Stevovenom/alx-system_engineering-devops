@@ -1,62 +1,30 @@
 #!/usr/bin/python3
+"""For a given employee ID, returns information about
+their TODO list progress"""
 
-"""
-Python script that, using a REST API, for a given employee ID,
-returns information about his/her TODO list progress.
-"""
-
-from requests import get
-from sys import argv
-
-
-def fetch_employee_todo_progress(employee_id):
-    """
-    Fetch and display the TODO list progress of an employee.
-
-    Args:
-        employee_id (int): The ID of the employee.
-
-    Returns:
-        None
-    """
-    # Fetch employee details
-    user_url = f"https://jsonplaceholder.typicode.com/users/{employee_id}"
-    todos_url = f"https: // jsonplaceholder.typicode.com/todos?
-    userId = {employee_id}"
-
-    user_response = get(user_url)
-    todos_response = get(todos_url)
-
-    # Ensure successful API response
-    if user_response.status_code != 200 or todos_response.status_code != 200:
-        print("Error fetching data from the API.")
-        return
-
-    user = user_response.json()
-    todos = todos_response.json()
-
-    # Extract employee details
-    employee_name = user.get("name")
-    total_tasks = len(todos)
-    done_tasks = [todo for todo in todos if todo.get("completed")]
-
-    # Display employee's TODO list progress
-    print(
-        f"Employee {employee_name} is done with tasks({len(done_tasks)}
-                                                      / {total_tasks}): ")
-    for task in done_tasks:
-        print(f"\t {task.get('title')}")
-
+import requests
+import sys
 
 if __name__ == "__main__":
-    if len(argv) != 2:
-        print("Usage: python3 0-gather_data_from_an_API.py <employee_id>")
-        exit(1)
 
-    try:
-        employee_id = int(argv[1])
-    except ValueError:
-        print("Employee ID must be an integer.")
-        exit(1)
+    userId = sys.argv[1]
+    user = requests.get("https://jsonplaceholder.typicode.com/users/{}"
+                        .format(userId))
 
-    fetch_employee_todo_progress(employee_id)
+    name = user.json().get('name')
+
+    todos = requests.get('https://jsonplaceholder.typicode.com/todos')
+    totalTasks = 0
+    completed = 0
+
+    for task in todos.json():
+        if task.get('userId') == int(userId):
+            totalTasks += 1
+            if task.get('completed'):
+                completed += 1
+
+    print('Employee {} is done with tasks({}/{}):'
+          .format(name, completed, totalTasks))
+
+    print('\n'.join(["\t " + task.get('title') for task in todos.json()
+          if task.get('userId') == int(userId) and task.get('completed')]))
