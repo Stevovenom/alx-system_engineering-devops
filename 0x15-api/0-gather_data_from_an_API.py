@@ -8,6 +8,7 @@ returns information about his/her TODO list progress.
 from requests import get
 from sys import argv
 
+
 def fetch_employee_todo_progress(employee_id):
     """
     Fetch and display the TODO list progress of an employee.
@@ -20,7 +21,8 @@ def fetch_employee_todo_progress(employee_id):
     """
     # Fetch employee details
     user_url = f"https://jsonplaceholder.typicode.com/users/{employee_id}"
-    todos_url = f"https://jsonplaceholder.typicode.com/todos?userId={employee_id}"
+    todos_url = f"https: // jsonplaceholder.typicode.com/todos?
+    userId = {employee_id}"
 
     user_response = get(user_url)
     todos_response = get(todos_url)
@@ -39,9 +41,12 @@ def fetch_employee_todo_progress(employee_id):
     done_tasks = [todo for todo in todos if todo.get("completed")]
 
     # Display employee's TODO list progress
-    print(f"Employee {employee_name} is done with tasks({len(done_tasks)}/{total_tasks}):")
+    print(
+        f"Employee {employee_name} is done with tasks({len(done_tasks)}
+                                                      / {total_tasks}): ")
     for task in done_tasks:
         print(f"\t {task.get('title')}")
+
 
 if __name__ == "__main__":
     if len(argv) != 2:
