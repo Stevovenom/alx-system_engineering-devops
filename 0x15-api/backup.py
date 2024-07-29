@@ -1,23 +1,10 @@
 #!/usr/bin/python3
-"""
-This module interacts with a REST API to retrieve and display
-an employee's TODO list progress given an employee ID.
-"""
 
 import requests
 import sys
 
 
 def fetch_employee_todo_progress(employee_id):
-    """
-    Fetch and display the TODO list progress of an employee.
-
-    Args:
-        employee_id (int): The ID of the employee.
-
-    Returns:
-        None
-    """
     # Fetch employee details
     user_url = f"https://jsonplaceholder.typicode.com/users/{employee_id}"
     todo_url = f"https: // jsonplaceholder.typicode.com/todos?
