@@ -1,45 +1,34 @@
 #!/usr/bin/python3
-"""For a given employee ID, returns information about
-their TODO list progress"""
+"""
+Returns to-do list information for a given employee ID.
+
+This script takes an employee ID as a command-line argument and fetches
+the corresponding user information and to-do list from the JSONPlaceholder API.
+It then prints the tasks completed by the employee.
+"""
 
 import requests
 import sys
 
+
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print("Usage: python3 0-gather_data_from_an_API.py <employee_id>")
-        sys.exit(1)
+    # Base URL for the JSONPlaceholder API
+    url = "https://jsonplaceholder.typicode.com/"
 
-    try:
-        userId = int(sys.argv[1])
-    except ValueError:
-        print("Employee ID must be an integer.")
-        sys.exit(1)
+    # Get the employee information using the provided employee ID
+    employee_id = sys.argv[1]
+    user = requests.get(url + "users/{}".format(employee_id)).json()
 
-    # Fetch user information
-    user_response = requests.get(
-        f"https://jsonplaceholder.typicode.com/users/{userId}")
-    if user_response.status_code != 200:
-        print("Error fetching user data from the API.")
-        sys.exit(1)
+    # Get the to-do list for the employee using the provided employee ID
+    params = {"userId": employee_id}
+    todos = requests.get(url + "todos", params).json()
 
-    user_data = user_response.json()
-    employee_name = user_data.get('name')
+    # Filter completed tasks and count them
+    completed = [t.get("title") for t in todos if t.get("completed") is True]
 
-    # Fetch TODO list
-    todos_response = requests.get(
-        f"https://jsonplaceholder.typicode.com/todos?userId={userId}")
-    if todos_response.status_code != 200:
-        print("Error fetching todos data from the API.")
-        sys.exit(1)
+    # Print the employee's name and the number of completed tasks
+    print("Employee {} is done with tasks({}/{}):".format(
+        user.get("name"), len(completed), len(todos)))
 
-    todos_data = todos_response.json()
-    total_tasks = len(todos_data)
-    completed_tasks = [task for task in todos_data if task.get('completed')]
-
-    # Display TODO list progress
-    print(
-        f"Employee {employee_name} is done with tasks({len(completed_tasks)
-                                                       }/{total_tasks}): ")
-    for task in completed_tasks:
-        print(f"\t {task.get('title')}")
+    # Print the completed tasks one by one with indentation
+    [print("\t {}".format(complete)) for complete in completed]
