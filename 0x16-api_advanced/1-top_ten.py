@@ -1,33 +1,39 @@
 #!/usr/bin/python3
 
-"""
-importing requests module
-"""
-
-from requests import get
+import requests
 
 
 def top_ten(subreddit):
     """
-    function that queries the Reddit API and prints the titles of the first
-    10 hot posts listed for a given subreddit
+    Function that queries the Reddit API and prints the titles of the first
+    10 hot posts listed for a given subreddit.
+    If the subreddit is invalid, it prints 'None'.
     """
 
     if subreddit is None or not isinstance(subreddit, str):
         print("None")
+        return
 
-    user_agent = {'User-agent': 'Google Chrome Version 81.0.4044.129'}
+    url = f'https://www.reddit.com/r/{subreddit}/hot/.json'
+    headers = {'User-agent': 'Google Chrome Version 81.0.4044.129'}
     params = {'limit': 10}
-    url = 'https://www.reddit.com/r/{}/hot/.json'.format(subreddit)
-
-    response = get(url, headers=user_agent, params=params)
-    all_data = response.json()
 
     try:
-        raw1 = all_data.get('data').get('children')
+        response = requests.get(url, headers=headers, params=params,
+                                allow_redirects=False)
+        if response.status_code != 200:
+            print("None")
+            return
 
-        for i in raw1:
-            print(i.get('data').get('title'))
+        all_data = response.json()
+        posts = all_data.get('data', {}).get('children', [])
 
-    except Exception as e:
+        if not posts:
+            print("None")
+            return
+
+        for post in posts:
+            print(post.get('data', {}).get('title', 'None'))
+
+    except requests.RequestException as e:
         print("None")
