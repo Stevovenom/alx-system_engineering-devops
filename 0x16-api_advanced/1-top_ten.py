@@ -29,5 +29,5 @@ def top_ten(subreddit):
         for i in raw1:
             print(i.get('data').get('title'))
 
-    except:
+    except Exception as e:
         print("None")
