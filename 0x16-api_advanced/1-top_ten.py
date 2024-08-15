@@ -1,48 +1,33 @@
 #!/usr/bin/python3
 
-import requests
+"""
+importing requests module
+"""
+
+from requests import get
 
 
 def top_ten(subreddit):
     """
-    Function that queries the Reddit API and prints the titles of the first
-    10 hot posts listed for a given subreddit.
-    If the subreddit is invalid, it prints 'None'.
+    function that queries the Reddit API and prints the titles of the first
+    10 hot posts listed for a given subreddit
     """
 
-    # Check if the subreddit is None or not a string
     if subreddit is None or not isinstance(subreddit, str):
         print("None")
-        return
 
-    # Construct the API URL and headers
-    url = f'https://www.reddit.com/r/{subreddit}/hot/.json'
-    headers = {'User-agent': 'Google Chrome Version 81.0.4044.129'}
+    user_agent = {'User-agent': 'Google Chrome Version 81.0.4044.129'}
     params = {'limit': 10}
+    url = 'https://www.reddit.com/r/{}/hot/.json'.format(subreddit)
+
+    response = get(url, headers=user_agent, params=params)
+    all_data = response.json()
 
     try:
-        # Make the GET request to the Reddit API with no redirects allowed
-        response = requests.get(url, headers=headers,
-                                params=params, allow_redirects=False)
+        raw1 = all_data.get('data').get('children')
 
-        # Check if the response status code is not 200 (success)
-        if response.status_code != 200:
-            print("None")
-            return
+        for i in raw1:
+            print(i.get('data').get('title'))
 
-        # Parse the JSON response
-        all_data = response.json()
-        posts = all_data.get('data', {}).get('children', [])
-
-        # Check if the posts list is empty or missing
-        if not posts:
-            print("None")
-            return
-
-        # Loop through the posts and print each title
-        for post in posts:
-            print(post.get('data', {}).get('title', 'None'))
-
-    except requests.RequestException:
-        # Print 'None' if there's a network-related error
+    except Exception as e:
         print("None")
